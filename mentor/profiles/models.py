@@ -5,10 +5,11 @@ from django.db import models
 
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.OneToOneField(User)
     # Note: Add max file size limit.
     avatar = models.ImageField(upload_to="pic_folder/",
                                default="pic_folder/default_profile_picture_all.jpg")
     bio = models.CharField(max_length=255, default="")
 
 
+# First get the UserProfile model going, then add in django-friendship

@@ -1,9 +1,7 @@
+from . import models
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.contrib import messages
-from django.http import HttpResponse
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, TemplateView
 
@@ -17,7 +15,7 @@ class HomeIndexView(TemplateView):
 class UserProfileView(DetailView):
     slug_field = "username"
     slug_url_kwarg = slug_field
-    model = User
+    model = models.UserProfile
     template_name = "profiles/user_profile.html"
 
 
