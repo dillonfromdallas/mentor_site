@@ -1,0 +1,13 @@
+{% extends "profiles/layout.html" %}
+
+<head>
+  <title>{% block title %}{{user}} - {{ block.super }}{% endblock %}</title>
+</head>
+
+{% block body %}
+{% if user != request.user %}
+<h1> {{ user }}'s profile. </h1>
+{% else %}
+<h1> My Profile </h1>
+{% endif %}
+{% endblock %}

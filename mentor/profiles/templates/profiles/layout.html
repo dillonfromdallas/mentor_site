@@ -1,0 +1,27 @@
+<head>
+  <title>
+    {% block title %}Mentor{% endblock %}
+  </title>
+</head>
+
+<header>
+  <div class="header_main">
+    <div class="site_name">
+    </div>
+    <div class="main_nav">
+      <ul class="main_nav_ul">
+        <li><a href="{% url 'index' %}">Home</a></li>
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'userprofile' username=request.user %}">My Profile</a></li>
+        {% else %}
+        <li><a href="#">Sign Up</a></li>
+        {% endif %}
+    </div>
+  </div>
+</header>
+
+{% block body %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

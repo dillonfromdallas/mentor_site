@@ -1,1 +1,5 @@
 db.sqlite3
+mentor_venv
+.idea
+.DS_Store
+mentor/.idea
