@@ -4,3 +4,5 @@ mentor_venv
 .DS_Store
 mentor/.idea
 mentor/mentore/.idea
+idea
+__pycache__
