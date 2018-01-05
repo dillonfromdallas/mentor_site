@@ -15,8 +15,9 @@ Including another URLconf
 """
 from . import views
 from django.conf.urls import url
-from django.contrib import admin
 
 urlpatterns = [
     url(r'^(?P<username>[\w]+)/$', views.UserProfileView.as_view(), name="userprofile"),
+    url(r'^(?P<username>[\w]+)/follow/$', views.make_new_follow_view, name="follow"),
+    url(r'^(?P<username>[\w]+)/unfollow$', views.delete_follow_view, name="unfollow"),
 ]
