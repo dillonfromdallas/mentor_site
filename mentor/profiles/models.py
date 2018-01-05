@@ -5,20 +5,6 @@ from django.db import models
 # Create your models here.
 
 
-class UserModelExtension(User):
-
-    def is_following(self, other_user):
-        try:
-            other_username = User.objects.get(username=other_user)
-            test = Follow.objects.get(follower=self.username, followee=other_username)
-            return True
-        except ObjectDoesNotExist:
-            return False
-
-    class Meta:
-        proxy = True
-
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     # Note: Add max file size limit.
