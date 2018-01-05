@@ -3,3 +3,4 @@ mentor_venv
 .idea
 .DS_Store
 mentor/.idea
+mentor/mentore/.idea
