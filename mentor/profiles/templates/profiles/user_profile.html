@@ -1,5 +1,5 @@
 {% extends "profiles/layout.html" %}
-
+ {% load static %}
 <head>
   <title>{% block title %}{{ object.user}} - {{ block.super }}{% endblock %}</title>
 </head>
@@ -13,5 +13,4 @@
 <img src="{{ object.avatar.url }}">
 {{ object.bio }}
 
-<button><a href="{% url 'follow' %}">Follow</a></button>
 {% endblock %}

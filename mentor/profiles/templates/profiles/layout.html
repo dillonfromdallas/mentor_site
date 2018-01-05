@@ -1,4 +1,8 @@
+{% load static %}
+
 <head>
+  <link rel="stylesheet" type="text/css" href="{% static 'profiles/style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'profiles/normalize.css' %}">
   <title>
     {% block title %}Mentor{% endblock %}
   </title>
