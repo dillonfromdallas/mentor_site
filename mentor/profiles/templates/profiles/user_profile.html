@@ -5,36 +5,46 @@
 </head>
 
 {% block body %}
-{% if object.user != request.user %}
-<h1> {{ object.user }}'s profile. </h1>
-{% else %}
-<h1> My Profile </h1>
-{% endif %}
-<img src="{{ object.avatar.url }}">
-{{ object.bio }}
-
-{% if object.user != request.user %}
-{% if mutual_follow %}
-You and {{ object.user }} are following each other!
-{% else %}
-You are{% if not user_is_following %} not{% endif %} following {{ object.user }}.
-{% endif %} {% endif %}
-
-<div id="follow_check">
   {% if object.user != request.user %}
-      {% if not user_is_following %}
-  <form action="{% url 'follow' username=object.user %}" method="POST">
-      {% csrf_token %}
-  <input type="hidden" name="to_user_username" value="{{ object.user }}">
-  <input type="submit" value="Follow">
-  </form>
-      {% elif user_is_following %}
-      <form action="{% url 'unfollow' username=object.user %}" method="POST">
-      {% csrf_token %}
-  <input type="hidden" name="to_user_username" value="{{ object.user }}">
-  <input type="submit" value="Unfollow">
-  </form>
-      {% endif %}
+    <h1> {{ object.user }}'s profile. </h1>
+  {% else %}
+    <h1> My Profile </h1>
+  {% endif %}
+  {% if object.avatar %}
+    <img
+    src="{{object.avatar.url}}"
+    alt="profile picture"
+    class="profile_picture">
+  {% else %}
+    <h5>¯\_(ツ)_/¯</h5>
+    <h5>{{object.user}} has not set a profile picture.</h5>
   {% endif %}
 
+  {{ object.bio }}
+
+  {% if object.user != request.user %}
+    {% if mutual_follow %}
+      You and {{ object.user }} are following each other!
+    {% else %}
+      You are{% if not user_is_following %} not{% endif %} following {{ object.user }}.
+    {% endif %}
+  {% endif %}
+
+  <div id="follow_check">
+    {% if object.user != request.user %}
+      {% if not user_is_following %}
+        <form action="{% url 'follow' username=object.user %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="to_user_username" value="{{ object.user }}">
+          <input type="submit" value="Follow" class="btn btn-default">
+        </form>
+      {% elif user_is_following %}
+        <form action="{% url 'unfollow' username=object.user %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="to_user_username" value="{{ object.user }}">
+          <input type="submit" value="Unfollow" class="btn btn-default">
+        </form>
+      {% endif %}
+    {% endif %}
+  </div>
 {% endblock %}
