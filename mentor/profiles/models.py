@@ -19,9 +19,11 @@ class UserManager(models.Manager):
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     # Note: Add max file size limit.
-    avatar = models.ImageField(upload_to="pic_folder/",
-                               default="pic_folder/default_profile_picture_all.jpg")
+    avatar = models.ImageField(upload_to="profile_image", blank=True)
     bio = models.CharField(max_length=255, default="")
+
+    def __str__(self):
+        return self.user.username
 
 
 class Follow(models.Model):
