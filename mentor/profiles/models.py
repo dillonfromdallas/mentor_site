@@ -18,7 +18,6 @@ class UserManager(models.Manager):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    # Note: Add max file size limit.
     avatar = models.ImageField(upload_to="profile_image", blank=True)
     bio = models.CharField(max_length=255, default="")
 
