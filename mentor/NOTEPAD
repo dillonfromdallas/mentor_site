@@ -1,0 +1,53 @@
+Feature
+   [Description]
+
+Edit Profile:
+  * Create an UpdateView
+  * Allow users to edit Avatar and Bio.
+
+  Note: This will be difficult because, in order to view a user's profile, you
+  must first find the User from the slug, then override the get_object method
+  to retrieve the correct UserProfile object. (You can see this in your 
+  UserProfileView model.
+
+  You will have to find a way to:
+    1. Retrieve the proper UserProfile model
+    2. Pass this into the Update View
+    3. Do so whilst including the correct fields. (This is your sticking point.)
+    
+  SideNote: Add a max file size for profile pictures
+
+Block Users
+  * Create a "Settings" button where user != request.user
+    * "Settings" button linked to Detail View of Follow relationship
+    * Add 'Block' button
+    * Add is_blocked function to Follow model
+      * if user.is_blocked, delete Follow relationship
+      * (Later) Do not display posts from this user
+      * (Later) Do not accept/display messages from this user
+      * (Later) Do not allow sending messages to this user
+
+Report Users
+  * Create new "Reports" view
+    * Only viewable if user.is_admin
+    * Displays "X_user reported for Y_reason:
+    * Ordered by datetime - most recent
+  * In above "Settings" view:
+    * Add "Report" button
+    * Add a small form of options
+      * Inappropriate content
+      * Illegal content
+      * Harrassment 
+      * Other: 
+  
+CSS
+  * Fix colorless, non-inline navbar display
+  * Fix profile picture being squished
+  * Move "Mentor - Site for Success" into Navbar
+
+HTML
+  * Fix verbosity of signup page.
+
+JS
+  * Add a search function to discover user profiles.
+  * Add dropdown menu for the above Report/Block feature.
