@@ -8,3 +8,4 @@ idea
 __pycache__
 mentor/mentor/__pycache__
 mentor/profiles/__pycache__
+mentor/profiles/media
