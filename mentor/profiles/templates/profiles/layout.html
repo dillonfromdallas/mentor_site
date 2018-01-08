@@ -10,22 +10,25 @@
   </title>
 </head>
 
-<div class="container">
 <header>
-  <div class="header_main">
+  <div class="navbar navbar-default">
     <div class="site_name">
     </div>
-    <div class="main_nav">
-      <ul class="main_nav_ul">
-        <li><a href="{% url 'index' %}">Home</a></li>
+    <div class="container-fluid">
+      <div class="navbar-nav">
+        <a href="{% url 'index' %}" class="nav-item nav-link">Home</a>
         {% if request.user.is_authenticated %}
-        <li><a href="{% url 'userprofile' username=request.user %}">My Profile</a></li>
+        <a href="{% url 'logout' %}" class="nav-item nav-link">Logout</a>
+        <a href="{% url 'userprofile' username=request.user %}" class="nav-item nav-link">My Profile</a>
         {% else %}
-        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+        <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+        <a href="{% url 'signup' %}" class="nav-item nav-link">Sign Up</a>
         {% endif %}
+      </div>
     </div>
   </div>
 </header>
+<div class="container">
 
 {% block body %}
 {% endblock %}

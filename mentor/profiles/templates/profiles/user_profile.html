@@ -1,8 +1,7 @@
 {% extends "profiles/layout.html" %}
  {% load static %}
-<head>
-  <title>{% block title %}{{ object.user}} - {{ block.super }}{% endblock %}</title>
-</head>
+
+{% block title %}{{ object.user}} - {{ block.super }}{% endblock %}
 
 {% block body %}
   {% if object.user != request.user %}
