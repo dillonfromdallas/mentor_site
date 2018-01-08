@@ -1,0 +1,24 @@
+{% extends 'profiles/layout.html'%}
+
+{% block title %}Login - {{ block.super }}{% endblock %}
+
+{% block body %}
+<div class="container">
+<h1>Welcome back!</h1>
+
+{% if request.user.is_authenticated or request.user != 'AnonymousUser' %}
+<form class="form" method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+<button class="btn btn-default" type="submit">Login</button>
+</form>
+{% else %}
+<h3> Whoops! </h3>
+<p>You're already logged {{request.user}}! Would you like to:</p>
+<br>
+<a href="{% url 'index' %}" class="btn btn-info">Go home</a>
+or
+<a href="{% url 'logout' %}" class="btn btn-info">Logout</a>
+{% endif %}
+</div>
+{% endblock %}

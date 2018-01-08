@@ -16,14 +16,21 @@ Including another URLconf
 
 from profiles import views
 from profiles import urls as profiles_urls
+from django.contrib.auth.views import login
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
+
 urlpatterns = [
     url(r'^$', views.HomeIndexView.as_view(), name="index"),
-    url(r'^signup/', views.UserSignUpView.as_view(), name="signup"),
     url(r'^admin/', admin.site.urls),
+    url(r'^login/$', login, {'template_name': 'profiles/login.html',
+                             'redirect_field_name': 'index',
+                             }, name="login"),
+    url(r'^logout/$', views.UserLogoutView.as_view(), name="logout"),
     url(r'^profiles/', include(profiles_urls)),
+    url(r'^signup/$', views.UserSignUpView.as_view(), name="signup"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

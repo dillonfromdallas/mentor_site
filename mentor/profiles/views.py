@@ -1,9 +1,10 @@
 from . import models
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LogoutView
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -15,6 +16,10 @@ from django.views.generic import CreateView, DetailView, TemplateView
 
 class HomeIndexView(TemplateView):
     template_name = "profiles/index.html"
+
+
+class UserLogoutView(LogoutView):
+    next_page = reverse_lazy("index")
 
 
 class UserProfileView(DetailView):
