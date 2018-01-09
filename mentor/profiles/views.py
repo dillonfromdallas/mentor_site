@@ -8,7 +8,7 @@ from django.contrib.auth.views import LogoutView
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, TemplateView
+from django.views.generic import CreateView, DetailView, UpdateView, TemplateView
 
 
 # Create your views here.
@@ -22,21 +22,19 @@ class UserLogoutView(LogoutView):
     next_page = reverse_lazy("index")
 
 
-class UserProfileView(DetailView):
-    slug_field = "username"  # Enables users to search by username
-    slug_url_kwarg = slug_field
-    model = User
-    template_name = "profiles/user_profile.html"
+class UserProfileEditView(UpdateView):
+    model = models.UserProfile
+    slug_field = 'user__username'
+    slug_url_kwarg = "username"
+    fields = ['avatar', 'bio']
+    template_name = "profiles/profile_update.html"
 
-    def get_object(self, queryset=None):
-        '''Takes the username input, finds a matching User object, and creates/delivers a UserProfile in it's place.'''
-        user = super().get_object()  # Ensures this only works with existing User objects.
-        try:
-            profile = models.UserProfile.objects.get(user=user)
-            return profile
-        except ObjectDoesNotExist:
-            profile = models.UserProfile.objects.create(user=user)
-            return profile
+
+class UserProfileView(DetailView):
+    slug_field = "user__username"  # Enables users to search by username
+    slug_url_kwarg = "username"
+    model = models.UserProfile
+    template_name = "profiles/user_profile.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
