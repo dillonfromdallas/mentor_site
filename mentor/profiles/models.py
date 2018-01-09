@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
 # Create your models here.
@@ -7,13 +6,12 @@ from django.db import models
 
 class UserManager(models.Manager):
     def is_following(self, other_user):
-        yourself = self.request.user
-        other_username = User.objects.get(username=other_user)
-        try:
-            test = Follow.objects.get(follower=yourself, followee=other_username)
-            return True
-        except ObjectDoesNotExist:
-            return False
+        return Follow.objects.get(follower=self.request.user,
+                                  followee=User.objects.get(username=other_user)).exists()
+
+    def is_blocked(self, other_user):
+        return Block.objects.get(blocker=self.request.user,
+                                 blocked=User.objects.get(username=other_user)).exists()
 
 
 class UserProfile(models.Model):
@@ -28,3 +26,14 @@ class UserProfile(models.Model):
 class Follow(models.Model):
     follower = models.ForeignKey(User, related_name='following')
     followee = models.ForeignKey(User, related_name='followers')
+
+    def __str__(self):
+        return f"{self.follower} is following {self.followee}."
+
+
+class Block(models.Model):
+    blocker = models.ForeignKey(User, related_name='blocking')
+    blocked = models.ForeignKey(User, related_name='blocked')
+
+    def __str__(self):
+        return f"{self.blocked} has been blocked by {self.blocker}."
