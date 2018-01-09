@@ -1,7 +1,7 @@
 Feature
    [Description]
 
-Edit Profile:
+Edit Profile: **COMPLETE**
   * Create an UpdateView
   * Allow users to edit Avatar and Bio.
 
@@ -14,6 +14,14 @@ Edit Profile:
     1. Retrieve the proper UserProfile model
     2. Pass this into the Update View
     3. Do so whilst including the correct fields. (This is your sticking point.)
+
+  COMPLETED BY:
+
+    * using lookups that span relationships
+    ex:
+    model = UserProfile
+    slug_url_kwarg = "username"
+    slug_field = "user__username"
     
   SideNote: Add a max file size for profile pictures
 
