@@ -36,7 +36,6 @@ class UserProfileView(DetailView):
             return profile
         except ObjectDoesNotExist:
             profile = models.UserProfile.objects.create(user=user)
-            profile.save()
             return profile
 
     def get_context_data(self, **kwargs):
