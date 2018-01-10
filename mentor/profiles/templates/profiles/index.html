@@ -3,8 +3,12 @@
 {% block title %}Home - {{ block.super }}{% endblock %}
 
 {% block body %}
-<h1>Mentor</h1>
-<h2>The Site for Success</h2>
+<div class="bg-light text-dark">
+  <div class="container text-center">
+    <div class="jumbotron bluejumbo jumbotron-fluid">
+<h1 class="display-4 mt-0">Mentor</h1>
+<h2 class="lead">The Site for Success</h2>
+</div>
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -15,3 +19,5 @@
 </ul>
 {% endif %}
 {% endblock %}
+</div>
+</div>

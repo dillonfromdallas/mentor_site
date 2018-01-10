@@ -39,22 +39,42 @@ Blocked - {{ block.super }}
 
 {% else %}
 
+{% if messages %}
+<ul class="messages text-center alert alert-primary">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="container profile_meta">
+  <div class="jumbotron jumbotron-fluid bluejumbo text-center">
+    <div class="row">
+      <div class="col">
   {% if object.user != request.user %}
-    <h1> {{ object.user }}'s profile. </h1>
+    <h1 class="display-4 mt-0"> {{ object.user }}'s profile. </h1>
   {% else %}
-    <h1> My Profile </h1>
+    <h1 class="display-4 mt-0 "> My Profile </h1>
   {% endif %}
+</div>
+</div>
+<div class="row align-items-center">
+  <div class="col">
   {% if object.avatar %}
     <img
     src="{{object.avatar.url}}"
     alt="profile picture"
-    class="profile_picture">
+    class="profile_picture mb-5">
   {% else %}
     <h5>¯\_(ツ)_/¯</h5>
     <h5>{{object.user}} has not set a profile picture.</h5>
   {% endif %}
-<br>
-  {{ object.bio }}
+</div>
+<div class="col justify-content-start"
+  <p class="lead">{{ object.bio }}</p>
+</div>
+</div>
 
   {% if object.user != request.user %}
     {% if mutual_follow %}
@@ -63,6 +83,7 @@ Blocked - {{ block.super }}
       You are{% if not user_is_following %} not{% endif %} following {{ object.user }}.
     {% endif %}
   {% endif %}
+</div>
 
   <div id="profile_functions">
     {% if object.user != request.user %}
