@@ -1,5 +1,8 @@
+import os
+
 from django.contrib.auth.models import User
 from django.db import models
+from mentor import settings
 
 # Create your models here.
 
@@ -16,7 +19,9 @@ class UserManager(models.Manager):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    avatar = models.ImageField(upload_to="profile_image", blank=True)
+    avatar = models.ImageField(upload_to="profile_image",
+                               blank=True,
+                               default=os.path.join(settings.MEDIA_URL, '/profile_image/default_profile_picture_all.jpg'))
     bio = models.CharField(max_length=255, default="")
 
     def __str__(self):
