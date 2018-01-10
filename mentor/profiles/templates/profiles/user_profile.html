@@ -64,7 +64,7 @@ Blocked - {{ block.super }}
     {% endif %}
   {% endif %}
 
-  <div id="relationship_buttons">
+  <div id="profile_functions">
     {% if object.user != request.user %}
       {% if not user_is_following %}
         <form action="{% url 'follow' username=object.user %}" method="POST">
@@ -87,6 +87,9 @@ Blocked - {{ block.super }}
       </form>
       {% endif %}
     {% endif %}
+    {% if object.user == request.user %}
+      <a href="{% url 'edit' username=request.user %}" class="btn btn-primary">Edit</a>
+      {% endif %}
   </div>
 
 {% endif %}

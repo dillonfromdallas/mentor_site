@@ -5,7 +5,11 @@
 {% block body %}
 <form method="POST">
   {% csrf_token %}
+  <img src={{ object.avatar.url }} style="
+max-height: 200px;
+  ">
   {{ form.as_p }}
   <button class="btn btn-default" type="submit">Update</button>
 </form>
+<a href="{% url 'userprofile' username=request.user %}" class="btn btn-danger">Cancel</a>
 {% endblock %}
