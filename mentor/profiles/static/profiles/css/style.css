@@ -1,6 +1,6 @@
 .profile_picture {
-  width: 100px;
-  border-radius: 50%;
+  max-height: 150px;
+  border-radius: 25%;
 }
 
 /* How do we get the navbar to actually look like it should???
