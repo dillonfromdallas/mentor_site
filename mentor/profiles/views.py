@@ -1,11 +1,12 @@
 from . import models
+from braces.views import (LoginRequiredMixin)
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
-from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, TemplateView
@@ -18,11 +19,11 @@ class HomeIndexView(TemplateView):
     template_name = "profiles/index.html"
 
 
-class UserLogoutView(LogoutView):
+class UserLogoutView(LoginRequiredMixin, LogoutView):
     next_page = reverse_lazy("index")
 
 
-class UserProfileEditView(UpdateView):
+class UserProfileEditView(LoginRequiredMixin, UpdateView):
     model = models.UserProfile
     slug_field = 'user__username'
     slug_url_kwarg = "username"
@@ -38,10 +39,16 @@ class UserProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user_is_followed'] = models.Follow.objects.filter(followee=self.request.user,
-                                                                   follower=self.get_object().user)
-        context['user_is_following'] = models.Follow.objects.filter(followee=self.get_object().user,
-                                                                    follower=self.request.user)
+        main_user = self.request.user
+        other_user = self.get_object().user
+        context['you_are_blocking'] = models.Block.objects.filter(blocker=main_user,
+                                                                  blocked=other_user)
+        context['you_are_blocked'] = models.Block.objects.filter(blocker=other_user,
+                                                                 blocked=main_user)
+        context['user_is_followed'] = models.Follow.objects.filter(followee=main_user,
+                                                                   follower=other_user)
+        context['user_is_following'] = models.Follow.objects.filter(followee=other_user,
+                                                                    follower=main_user)
         context['mutual_follow'] = context['user_is_following'] and context['user_is_followed']
         return context
 
@@ -60,14 +67,19 @@ class UserSignUpView(CreateView):
         login(self.request, user)
         return response
 
+
 @login_required()
-def make_new_follow_view(request, *args, **kwargs):
+def block_user_view(request, *args, **kwargs):
     if request.method == "POST":
-        to_user_username = request.POST.get("to_user_username")
-        to_user_instance = User.objects.get(username=to_user_username)
-        models.Follow.objects.create(followee=to_user_instance, follower=request.user)
-        return HttpResponseRedirect(reverse_lazy("userprofile", kwargs={'username': to_user_username}))
-    return HttpResponseRedirect(reverse_lazy("fail", kwargs={}))
+        to_user = User.objects.get(username=request.POST.get("to_user_username"))
+        models.Block.objects.create(blocker=request.user, blocked=to_user)
+        follow1 = models.Follow.objects.get(followee=to_user, follower=request.user)
+        follow2 = models.Follow.objects.get(followee=request.user, follower=to_user)
+        if follow1.exists():
+            follow1.delete()
+        if follow2.exists():
+            follow2.delete()
+        return HttpResponseRedirect(reverse_lazy("userprofile", kwargs={'username': request.user}))
 
 
 @login_required()
@@ -78,3 +90,13 @@ def delete_follow_view(request, *args, **kwargs):
         instance_to_delete = models.Follow.objects.get(followee=to_user_instance, follower=request.user)
         instance_to_delete.delete()
         return HttpResponseRedirect(reverse_lazy("userprofile", kwargs={'username': to_user_username}))
+
+
+@login_required()
+def make_new_follow_view(request, *args, **kwargs):
+    if request.method == "POST":
+        to_user_username = request.POST.get("to_user_username")
+        to_user_instance = User.objects.get(username=to_user_username)
+        models.Follow.objects.create(followee=to_user_instance, follower=request.user)
+        return HttpResponseRedirect(reverse_lazy("userprofile", kwargs={'username': to_user_username}))
+    return HttpResponseRedirect(reverse_lazy("fail", kwargs={}))

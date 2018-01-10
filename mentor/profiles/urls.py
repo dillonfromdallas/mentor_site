@@ -18,6 +18,7 @@ from django.conf.urls import url
 
 urlpatterns = [
     url(r'^(?P<username>[\w]+)/$', views.UserProfileView.as_view(), name="userprofile"),
+    url(r'^(?P<username>[\w]+)/block/$', views.block_user_view, name="block"),
     url(r'^(?P<username>[\w]+)/edit/$', views.UserProfileEditView.as_view(), name="edit"),
     url(r'^(?P<username>[\w]+)/follow/$', views.make_new_follow_view, name="follow"),
     url(r'^(?P<username>[\w]+)/unfollow$', views.delete_follow_view, name="unfollow"),

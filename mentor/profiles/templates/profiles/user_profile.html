@@ -1,9 +1,37 @@
 {% extends "profiles/layout.html" %}
  {% load static %}
 
-{% block title %}{{ object.user}} - {{ block.super }}{% endblock %}
+{% block title %}
+{% if you_are_blocked or you_are_blocking %}
+Blocked - {{ block.super }}
+{% else %}
+{{ object.user }} - {{ block.super }}
+{% endif %}
+{% endblock %}
 
 {% block body %}
+
+{% if you_are_blocked %}
+<div class="bg-light text-danger">
+<div class="container text-center">
+<h1 class="display-1 mt-5">Blocked.</h1>
+<p class="lead">This user has blocked your access to their profile. Please <a href="
+  {% url 'index' %}">return to the home page.</a></p>
+</div>
+</div>
+
+{% elif you_are_blocking %}
+
+<div class="bg-light text-danger">
+<div class="container text-center">
+<h1 class="display-1 mt-5">Blocked.</h1>
+<p class="lead">You have blocked this user. Please <a href="
+  {% url 'index' %}">return to the home page.</a></p>
+</div>
+</div>
+
+{% else %}
+
   {% if object.user != request.user %}
     <h1> {{ object.user }}'s profile. </h1>
   {% else %}
@@ -18,7 +46,7 @@
     <h5>¯\_(ツ)_/¯</h5>
     <h5>{{object.user}} has not set a profile picture.</h5>
   {% endif %}
-
+<br>
   {{ object.bio }}
 
   {% if object.user != request.user %}
@@ -46,4 +74,6 @@
       {% endif %}
     {% endif %}
   </div>
+
+{% endif %}
 {% endblock %}
