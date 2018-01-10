@@ -1,5 +1,5 @@
 from . import models
-from braces.views import (LoginRequiredMixin)
+from braces.views import (LoginRequiredMixin, UserPassesTestMixin)
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -11,8 +11,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, TemplateView
 
-
-# Create your views here.
+# Class-Based-Views.
 
 
 class HomeIndexView(TemplateView):
@@ -24,11 +23,16 @@ class UserLogoutView(LoginRequiredMixin, LogoutView):
 
 
 class UserProfileEditView(LoginRequiredMixin, UpdateView):
+
     model = models.UserProfile
     slug_field = 'user__username'
     slug_url_kwarg = "username"
     fields = ['avatar', 'bio']
     template_name = "profiles/profile_update.html"
+
+    def get_success_url(self):
+        messages.success(self.request, 'Profile successfully updated.')
+        return reverse_lazy('userprofile', kwargs={'username': self.request.user})
 
 
 class UserProfileView(DetailView):
@@ -67,6 +71,9 @@ class UserSignUpView(CreateView):
         login(self.request, user)
         models.UserProfile.objects.create(user=User.objects.get(username=username))
         return response
+
+
+# Functional Views
 
 
 @login_required()
