@@ -3,6 +3,13 @@
   border-radius: 25%;
 }
 
+.bluejumbo{
+  background-color: powderblue;
+}
+
+.messages {
+  list-style: none;
+}
 /* How do we get the navbar to actually look like it should???
 * Display inline
 * Display with some color
