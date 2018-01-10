@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
-from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, TemplateView
@@ -65,6 +65,7 @@ class UserSignUpView(CreateView):
         password = self.request.POST['password1']
         user = authenticate(username=username, password=password)
         login(self.request, user)
+        models.UserProfile.objects.create(user=User.objects.get(username=username))
         return response
 
 
@@ -72,14 +73,22 @@ class UserSignUpView(CreateView):
 def block_user_view(request, *args, **kwargs):
     if request.method == "POST":
         to_user = User.objects.get(username=request.POST.get("to_user_username"))
+        if models.Follow.objects.filter(followee=to_user, follower=request.user).exists():
+            models.Follow.objects.get(followee=to_user, follower=request.user).delete()
+        if models.Follow.objects.filter(followee=request.user, follower=to_user).exists():
+            models.Follow.objects.get(followee=request.user, follower=to_user).delete()
         models.Block.objects.create(blocker=request.user, blocked=to_user)
-        follow1 = models.Follow.objects.get(followee=to_user, follower=request.user)
-        follow2 = models.Follow.objects.get(followee=request.user, follower=to_user)
-        if follow1.exists():
-            follow1.delete()
-        if follow2.exists():
-            follow2.delete()
-        return HttpResponseRedirect(reverse_lazy("userprofile", kwargs={'username': request.user}))
+        return HttpResponseRedirect(reverse_lazy("userprofile", kwargs={'username': request.user.username}))
+    return HttpResponseRedirect(reverse_lazy("index"))
+
+
+@login_required()
+def unblock_user_view(request, *args, **kwargs):
+    if request.method == "POST":
+        to_user = User.objects.get(username=request.POST.get("to_user_username"))
+        if models.Block.objects.filter(blocker=request.user, blocked=to_user).exists():
+            models.Block.objects.get(blocker=request.user, blocked=to_user).delete()
+        return HttpResponseRedirect(reverse_lazy("userprofile", kwargs={'username': to_user.username}))
 
 
 @login_required()

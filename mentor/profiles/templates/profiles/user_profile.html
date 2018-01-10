@@ -26,7 +26,14 @@ Blocked - {{ block.super }}
 <div class="container text-center">
 <h1 class="display-1 mt-5">Blocked.</h1>
 <p class="lead">You have blocked this user. Please <a href="
-  {% url 'index' %}">return to the home page.</a></p>
+  {% url 'index' %}">return to the home page.</a><br> or
+<form action="{% url 'unblock' username=object.user %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="to_user_username" value="{{ object.user }}">
+    <input type="submit" value="Unblock" class="btn btn-primary">
+</form>
+</p>
+
 </div>
 </div>
 
@@ -57,7 +64,7 @@ Blocked - {{ block.super }}
     {% endif %}
   {% endif %}
 
-  <div id="follow_check">
+  <div id="relationship_buttons">
     {% if object.user != request.user %}
       {% if not user_is_following %}
         <form action="{% url 'follow' username=object.user %}" method="POST">
@@ -71,6 +78,13 @@ Blocked - {{ block.super }}
           <input type="hidden" name="to_user_username" value="{{ object.user }}">
           <input type="submit" value="Unfollow" class="btn btn-default">
         </form>
+      {% endif %}
+      {% if not you_are_blocking %}
+      <form action="{% url 'block' username=object.user %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="to_user_username" value="{{ object.user }}">
+        <input type="submit" value="Block" class="btn btn-danger">
+      </form>
       {% endif %}
     {% endif %}
   </div>
