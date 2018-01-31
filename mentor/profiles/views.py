@@ -1,12 +1,12 @@
 from . import models
-from braces.views import (LoginRequiredMixin, UserPassesTestMixin)
+from posts import models as posts_models
+from braces.views import (LoginRequiredMixin)
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, TemplateView
@@ -45,6 +45,7 @@ class UserProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         main_user = self.request.user
         other_user = self.get_object().user
+        context['posts'] = posts_models.UserProfilePost.objects.filter(poster=main_user)
         context['you_are_blocking'] = models.Block.objects.filter(blocker=main_user,
                                                                   blocked=other_user)
         context['you_are_blocked'] = models.Block.objects.filter(blocker=other_user,
