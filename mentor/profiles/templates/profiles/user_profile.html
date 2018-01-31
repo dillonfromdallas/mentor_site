@@ -1,6 +1,7 @@
 {% extends "profiles/layout.html" %}
- {% load static %}
+{% load static %}
 
+<!-- Title Text -->
 {% block title %}
 {% if you_are_blocked or you_are_blocking %}
 Blocked - {{ block.super }}
@@ -9,7 +10,11 @@ Blocked - {{ block.super }}
 {% endif %}
 {% endblock %}
 
+<!-- Body Contents -->
+
 {% block body %}
+
+<!-- Handling Blocked User Instances -->
 
 {% if you_are_blocked %}
 <div class="bg-light text-danger">
@@ -39,6 +44,8 @@ Blocked - {{ block.super }}
 
 {% else %}
 
+<!-- Displaying User Profile -->
+
 {% if messages %}
 <ul class="messages text-center alert alert-primary">
     {% for message in messages %}
@@ -48,36 +55,26 @@ Blocked - {{ block.super }}
     {% endfor %}
 </ul>
 {% endif %}
-<div class="container profile_meta">
-  <div class="grid_jumbotron profile_header bluejumbo text-center">
+
+<div class="container">
+  <!--Profile Jumbotron-->
+  <div class="jumbotron jumbotron-fluid bg-white text-center">
   {% if object.user != request.user %}
-    <h1 class="display-4 mt-0"> {{ object.user }}'s profile. </h1>
+    <h1 class="display-4 mt-0 mb-3"> {{ object.user }}'s profile. </h1>
   {% else %}
-    <h1 class="display-4 mt-0 "> My Profile </h1>
+    <h1 class="display-4 mt-0 mb-3"> My Profile </h1>
   {% endif %}
   {% if object.avatar %}
     <img
     src="{{object.avatar.url}}"
     alt="profile picture"
-    class="profile_picture mb-5">
+    class="profile_picture mb-4">
   {% else %}
     <h5>¯\_(ツ)_/¯</h5>
     <h5>{{object.user}} has not set a profile picture.</h5>
   {% endif %}
-  <p class="lead">{{ object.bio }}</p>
-</div>
-</div>
-
-
-  {% if object.user != request.user %}
-    {% if mutual_follow %}
-      You and {{ object.user }} are following each other!
-    {% else %}
-      You are{% if not user_is_following %} not{% endif %} following {{ object.user }}.
-    {% endif %}
-  {% endif %}
-
-  <div id="profile_functions">
+    <p class="lead">{{ object.bio }}</p>
+    <div id="profile_functions">
     {% if object.user != request.user %}
       {% if not user_is_following %}
         <form action="{% url 'follow' username=object.user %}" method="POST">
@@ -103,24 +100,39 @@ Blocked - {{ block.super }}
     {% if object.user == request.user %}
       <a href="{% url 'edit' username=request.user %}" class="btn btn-primary">Edit</a>
       {% endif %}
+    </div>
   </div>
 
-  <div id="profile_posts">
-    <div id="post_box"
-    <textarea class="form-control">
-    <a href="{% url 'userprofile' user%}"
+  <!-- Follow Check -->
+  {% if object.user != request.user %}
+    {% if mutual_follow %}
+      You and {{ object.user }} are following each other!
+    {% else %}
+      You are{% if not user_is_following %} not{% endif %} following {{ object.user }}.
+    {% endif %}
+  {% endif %}
 
-    <ul>
+<!-- Displaying Posts -->
+  <div id="profile_posts" class="text-center">
+    <h1 class="h1">Posts</h1>
+    <div id="post_box">
+      <ul>
       {% for post in posts %}
-      <li>
-        <div>
-          {{ post.message }}
-          {{ post.post_time }}
-        </div>
+        <li class="profile_post pt-3 pb-3">
+          <div class="row">
+            <div class="col-8 align-middle">
+            {{ post.message }}
+            {{ post.post_time }}
+            </div>
+            <div class="col-4">
+              <a href="#" class="btn btn-primary">Like</a>
+            </div>
+          </div>
         </li>
       {% endfor %}
-    </ul>
+      </ul>
+    </div>
   </div>
-
-{% endif %}
+</div>
+{% endif %} <!-- Ends Block Check -->
 {% endblock %}

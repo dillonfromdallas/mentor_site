@@ -16,6 +16,12 @@ ul {
   border-radius: 25%;
 
 }
+
+.profile_post {
+  border-color: #4285F4;
+  border-style: solid;
+
+}
 /* How do we get the navbar to actually look like it should???
 * Display inline
 * Display with some color
