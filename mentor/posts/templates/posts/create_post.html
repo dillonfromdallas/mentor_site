@@ -3,10 +3,16 @@
 {% block title %}Create Post - {{ block.super }}{% endblock %}
 
 {% block body %}
-<form method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button class="btn btn-default" type="submit">Post</button>
-</form>
-<a href="{% url 'userprofile' username=request.user %}" class="btn btn-danger">Cancel</a>
+<div class="container">
+  <h1 class="display-3 text-center">Create New Post</h1>
+  <div class="dropdown-divider"></div>
+  <div id="create_post_form" class="mt-4 text-center align-middle">
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-default" type="submit">Post</button>
+      <a href="{% url 'userprofile' username=request.user %}" class="btn btn-danger">Cancel</a>
+    </form>
+  </div>
+</div>
 {% endblock %}
