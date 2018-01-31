@@ -9,3 +9,8 @@ __pycache__
 mentor/mentor/__pycache__
 mentor/profiles/__pycache__
 mentor/profiles/media
+mentor/.idea/
+mentor/mentor/__pycache__
+mentor/profiles/__pycache__
+mentor/posts/migrations
+mentor/profiles/migrations
