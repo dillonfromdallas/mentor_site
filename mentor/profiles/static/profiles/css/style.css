@@ -1,14 +1,20 @@
-.profile_picture {
-  max-height: 150px;
-  border-radius: 25%;
+ul {
+  list-style: none;
 }
 
 .bluejumbo{
   background-color: powderblue;
 }
 
+
 .messages {
   list-style: none;
+}
+
+.profile_picture {
+  max-height: 150px;
+  border-radius: 25%;
+
 }
 /* How do we get the navbar to actually look like it should???
 * Display inline
