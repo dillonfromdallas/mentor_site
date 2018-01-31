@@ -6,7 +6,6 @@
 <form method="POST">
   {% csrf_token %}
   {{ form.as_p }}
-  <input type="hidden" name="poster" value="{{ request.user }}">
   <button class="btn btn-default" type="submit">Post</button>
 </form>
 <a href="{% url 'userprofile' username=request.user %}" class="btn btn-danger">Cancel</a>

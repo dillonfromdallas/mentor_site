@@ -16,10 +16,15 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     slug_url_kwarg = 'username'
     template_name = "posts/create_post.html"
 
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.poster = self.request.user
+        instance.profile = self.request.user
+        return super().form_valid(form)
+
     def get_success_url(self):
         messages.success(self.request, 'Post created.')
         return reverse_lazy('userprofile', kwargs={'username': self.request.user})
-
 
 
 class PostFocusView(DetailView):
