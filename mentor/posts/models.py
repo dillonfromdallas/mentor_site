@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.functions import datetime
 
 # Create your models here.
 
@@ -9,7 +8,7 @@ class UserProfilePost(models.Model):
     poster = models.ForeignKey(User, related_name="posting_user")
     profile = models.ForeignKey(User, related_name="to_post_profile")
     message = models.CharField(max_length=255, default="")
-    post_time = datetime.datetime.now  # This doesnt quite work.
+    post_time = models.DateTimeField(auto_now_add=True, auto_now=False)
 
     def __str__(self):
         if self.poster == self.profile:
