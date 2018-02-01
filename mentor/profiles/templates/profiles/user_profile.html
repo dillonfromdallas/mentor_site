@@ -103,15 +103,6 @@ Blocked - {{ block.super }}
     </div>
   </div>
 
-  <!-- Follow Check -->
-  {% if object.user != request.user %}
-    {% if mutual_follow %}
-      You and {{ object.user }} are following each other!
-    {% else %}
-      You are{% if not user_is_following %} not{% endif %} following {{ object.user }}.
-    {% endif %}
-  {% endif %}
-
 <!-- Displaying Posts -->
   <div id="profile_posts" class="text-center">
     <h1 class="h1">Posts</h1>
