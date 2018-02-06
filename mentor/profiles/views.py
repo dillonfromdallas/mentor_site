@@ -58,6 +58,10 @@ class UserProfileView(DetailView):
         return context
 
 
+class UserSearchView(TemplateView):
+    template_name = "profiles/search_users.html"
+
+
 class UserSignUpView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('index')

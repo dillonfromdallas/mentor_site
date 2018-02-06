@@ -31,6 +31,7 @@ urlpatterns = [
                              }, name="login"),
     url(r'^logout/$', views.UserLogoutView.as_view(), name="logout"),
     url(r'^profiles/', include(profiles_urls)),
+    url(r'search/', views.UserSearchView.as_view(), name="search"),
     url(r'^signup/$', views.UserSignUpView.as_view(), name="signup"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
