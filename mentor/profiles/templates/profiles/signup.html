@@ -6,7 +6,7 @@
 <h1> Sign Up Here </h1>
 
 {% if messages %}
-<ul class="messages">
+<ul class="messages text-center alert alert-primary">
     {% for message in messages %}
     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
         {{ message }}
