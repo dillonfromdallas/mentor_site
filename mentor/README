@@ -1,0 +1,17 @@
+          Mentor Site
+          by: Dillon Reyna
+          thedillonreyna@gmail.com
+
+What is this?
+	This is a website that allows users to sign up and find mentors or mentees in
+  whatever areas they are looking to specialize in. This project combines a lot of key
+  elements of a social site including editable user profiles, tags for organization, and a smooth
+  minimalstic UI based on Bootstrap and Vanilla JS.
+
+Technologies:
+  Python
+  Django
+  HTML
+  CSS
+  Javascript
+  Git
